@@ -8,6 +8,7 @@ function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [list, setList] = useState(LIST);
   const [selectedItem, setSelectedItem] = useState('');
+  const [inputValue, setInputValue] = useState(selectedItem);
 
   const openDropDown = () => {
     setIsOpen(true);
@@ -20,16 +21,19 @@ function Dropdown() {
     setList([...list, newListItem]);
   };
 
-  useEffect(() => {
-    console.log(selectedItem);
-  }, [isOpen]);
-
   const onSelectItem = (item: string) => {
     setSelectedItem(item);
+    setInputValue(item);
   };
   return (
     <div className='relative' onfocusout={closeDropDown}>
-      <Input isOpen={isOpen} onOpen={openDropDown} onClose={closeDropDown} />
+      <Input
+        onChange={setInputValue}
+        value={inputValue}
+        isOpen={isOpen}
+        onOpen={openDropDown}
+        onClose={closeDropDown}
+      />
       <div
         className={classnames(
           'absolute w-full left-0 top-full border-1 mt-4 p-4 rounded-gb flex flex-col gap-4',
@@ -47,7 +51,7 @@ function Dropdown() {
               isSelected={title === selectedItem}
               onClick={() => {
                 onSelectItem(title);
-                setTimeout(closeDropDown, 50);
+                setTimeout(closeDropDown, 100);
               }}
             />
           );

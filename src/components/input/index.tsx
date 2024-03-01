@@ -1,16 +1,20 @@
+import { useRef, ChangeEvent } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { classnames } from '../../utils/classnames/index';
 import styles from './styles.module.scss';
-import { useRef } from 'react';
 
 function Input({
   isOpen,
   onOpen,
-  onClose
+  onClose,
+  onChange,
+  value
 }: {
   isOpen: boolean;
   onOpen: VoidFunction;
   onClose: VoidFunction;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }) {
   const inputRef = useRef();
   const onOpenDropDown = () => {
@@ -19,6 +23,9 @@ function Input({
   };
   const onCloseDropDown = () => {
     onClose();
+  };
+  const onInputChange = (event) => {
+    onChange(event.target.value);
   };
   return (
     <div
@@ -29,7 +36,9 @@ function Input({
       )}
     >
       <input
-        onBlur={() => setTimeout(onCloseDropDown, 100)}
+        value={value}
+        onChange={onInputChange}
+        onBlur={() => setTimeout(onCloseDropDown, 150)}
         ref={inputRef}
         className='grow px-2 border-transparent text-base'
       />
