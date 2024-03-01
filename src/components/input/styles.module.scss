@@ -1,0 +1,11 @@
+.Input {
+  &:focus-within {
+    border: 1px solid var(--color-blue-600);
+    outline: 2px solid var(--color-blue-100);
+  }
+
+  &__input {
+    outline: none;
+    border: none;
+  }
+}

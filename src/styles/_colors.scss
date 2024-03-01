@@ -52,6 +52,6 @@ $colors: (
 
 :root {
   @each $color, $value in $colors {
-    --color-#{$color}: #{$value}
+    --color-#{$color}: #{$value};
   }
 }

@@ -4,10 +4,7 @@ import { generateSpacing } from './src/tailwind/spacing';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: generateTailwindColors(),
     spacing: generateSpacing(),
@@ -20,6 +17,5 @@ export default {
       circle: 'var(--rounded-radius)'
     }
   },
-  plugins: [],
-}
-
+  plugins: []
+};
