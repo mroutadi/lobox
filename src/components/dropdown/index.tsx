@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Input } from '../input';
 import { DropdownItem } from './dropdown-item/index';
 import { LIST } from '../../../mock/list';
 import { classnames } from '../../utils/classnames/index';
+import { debounce } from '../../utils/debounce/index';
 
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,16 +33,16 @@ function Dropdown() {
     }
   };
 
-  const onSelectItem = (item: string) => {
-    for (const listItem of list) {
-      if (listItem.toLowerCase() === item.toLowerCase().trim()) {
-        setSelectedItem(listItem);
-        setInputValue(listItem);
-        break;
-      } else {
-        setSelectedItem(item);
-        setInputValue(item);
-      }
+  const onSelectItem = (item) => {
+    const listItem = list.find(
+      (listItem) => listItem.toLowerCase() === item.toLowerCase().trim()
+    );
+    if (listItem) {
+      setSelectedItem(listItem);
+      setInputValue(listItem);
+    } else {
+      setSelectedItem(item);
+      setInputValue(item);
     }
   };
 
@@ -55,11 +56,16 @@ function Dropdown() {
       );
     }
   };
+  const handleTypingDebounced = useMemo(() => debounce(handleTyping, 300), []);
+  const handleInputChange = (text) => {
+    setInputValue(text);
+    handleTypingDebounced(text);
+  };
 
   return (
-    <div className='relative' onfocusout={closeDropDown}>
+    <div className='relative'>
       <Input
-        onChange={handleTyping}
+        onChange={handleInputChange}
         value={inputValue}
         isOpen={isOpen}
         onOpen={openDropDown}

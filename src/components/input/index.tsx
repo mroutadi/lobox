@@ -23,6 +23,7 @@ function Input({
   };
   const onCloseDropDown = () => {
     onClose();
+    inputRef.current?.blur();
   };
   const onInputChange = (event) => {
     onChange(event.target.value);
@@ -38,14 +39,15 @@ function Input({
         value={value}
         onChange={onInputChange}
         onClick={onOpenDropDown}
-        onBlur={() => setTimeout(onCloseDropDown, 200)}
+        onBlur={() => setTimeout(onCloseDropDown, 150)}
+        onFocus={() => setTimeout(onOpenDropDown, 150)}
         ref={inputRef}
         className='grow px-2 border-transparent text-lg font-light'
       />
       {isOpen ? (
         <ChevronUpIcon width={20} onClick={onCloseDropDown} />
       ) : (
-        <ChevronDownIcon onClick={onOpenDropDown} width={20} />
+        <ChevronDownIcon width={20} onClick={onOpenDropDown} />
       )}
     </div>
   );
