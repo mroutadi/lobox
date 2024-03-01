@@ -1,9 +1,17 @@
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { classnames } from '../../utils/classnames/index';
 import styles from './styles.module.scss';
 import { useRef } from 'react';
 
-function Input({ onOpen, onClose }: { onOpen: VoidFunction; onClose: VoidFunction }) {
+function Input({
+  isOpen,
+  onOpen,
+  onClose
+}: {
+  isOpen: boolean;
+  onOpen: VoidFunction;
+  onClose: VoidFunction;
+}) {
   const inputRef = useRef();
   const onOpenDropDown = () => {
     onOpen();
@@ -16,16 +24,16 @@ function Input({ onOpen, onClose }: { onOpen: VoidFunction; onClose: VoidFunctio
     <div
       onClick={onOpenDropDown}
       className={classnames(
-        'w-[240px] flex p-4 border-1 rounded-gb border-gray-500',
+        'w-[240px] flex p-4 border-1 rounded-gb border-gray-500 cursor-pointer',
         styles.Input
       )}
     >
       <input
-        onBlur={onCloseDropDown}
+        onBlur={() => setTimeout(onCloseDropDown, 100)}
         ref={inputRef}
-        className='grow px-2  border-transparent text-base'
+        className='grow px-2 border-transparent text-base'
       />
-      <ChevronDownIcon width={20} />
+      {isOpen ? <ChevronUpIcon width={20} /> : <ChevronDownIcon width={20} />}
     </div>
   );
 }
