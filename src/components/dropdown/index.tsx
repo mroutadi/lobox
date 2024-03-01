@@ -7,6 +7,7 @@ import { classnames } from '../../utils/classnames/index';
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [list, setList] = useState(LIST);
+  const [dropDownList, setDropDownList] = useState(list);
   const [selectedItem, setSelectedItem] = useState('');
   const [inputValue, setInputValue] = useState(selectedItem);
 
@@ -17,18 +18,48 @@ function Dropdown() {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    setDropDownList(list);
+  }, [list]);
+
   const addToList = (newListItem: string) => {
-    setList([...list, newListItem]);
+    if (
+      !list.filter((item) => item.toLowerCase() === newListItem.toLowerCase().trim())
+        .length
+    ) {
+      setList([...list, newListItem]);
+      setDropDownList(list);
+    }
   };
 
   const onSelectItem = (item: string) => {
-    setSelectedItem(item);
-    setInputValue(item);
+    for (const listItem of list) {
+      if (listItem.toLowerCase() === item.toLowerCase().trim()) {
+        setSelectedItem(listItem);
+        setInputValue(listItem);
+        break;
+      } else {
+        setSelectedItem(item);
+        setInputValue(item);
+      }
+    }
   };
+
+  const handleTyping = (text: string) => {
+    setInputValue(text);
+    if (!text) {
+      setDropDownList(list);
+    } else {
+      setDropDownList(
+        list.filter((item) => item.toLowerCase().includes(text.toLowerCase().trim()))
+      );
+    }
+  };
+
   return (
     <div className='relative' onfocusout={closeDropDown}>
       <Input
-        onChange={setInputValue}
+        onChange={handleTyping}
         value={inputValue}
         isOpen={isOpen}
         onOpen={openDropDown}
@@ -36,14 +67,15 @@ function Dropdown() {
       />
       <div
         className={classnames(
-          'absolute w-full left-0 top-full border-1 mt-4 p-4 rounded-gb flex flex-col gap-4',
+          'absolute w-full left-0 top-full border-1 mt-4',
+          'p-4 rounded-gb flex flex-col gap-4 max-h-[200px] overflow-auto',
           {
             hidden: !isOpen,
             block: isOpen
           }
         )}
       >
-        {LIST.map((title) => {
+        {dropDownList.map((title) => {
           return (
             <DropdownItem
               key={title}
@@ -51,11 +83,39 @@ function Dropdown() {
               isSelected={title === selectedItem}
               onClick={() => {
                 onSelectItem(title);
-                setTimeout(closeDropDown, 100);
+                setTimeout(closeDropDown, 150);
               }}
             />
           );
         })}
+        {!list.filter((item) =>
+          item.toLowerCase().includes(inputValue.toLowerCase().trim())
+        ).length && (
+          <DropdownItem
+            title={inputValue}
+            isNew
+            isSelected={false}
+            onClick={() => {
+              addToList(inputValue);
+              onSelectItem(inputValue);
+              setTimeout(closeDropDown, 150);
+            }}
+          />
+        )}
+        {/* If we want be able to add words smaller than available words */}
+        {/* */}
+        {/*{inputValue.trim() && (*/}
+        {/*  <DropdownItem*/}
+        {/*    title={inputValue}*/}
+        {/*    isNew*/}
+        {/*    isSelected={false}*/}
+        {/*    onClick={() => {*/}
+        {/*      addToList(inputValue);*/}
+        {/*      onSelectItem(inputValue);*/}
+        {/*      setTimeout(closeDropDown, 150);*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*)}*/}
       </div>
     </div>
   );

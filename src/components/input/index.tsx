@@ -29,7 +29,6 @@ function Input({
   };
   return (
     <div
-      onClick={onOpenDropDown}
       className={classnames(
         'w-[240px] flex p-4 border-1 rounded-gb border-gray-500 cursor-pointer',
         styles.Input
@@ -38,11 +37,16 @@ function Input({
       <input
         value={value}
         onChange={onInputChange}
-        onBlur={() => setTimeout(onCloseDropDown, 150)}
+        onClick={onOpenDropDown}
+        onBlur={() => setTimeout(onCloseDropDown, 200)}
         ref={inputRef}
-        className='grow px-2 border-transparent text-base'
+        className='grow px-2 border-transparent text-lg font-light'
       />
-      {isOpen ? <ChevronUpIcon width={20} /> : <ChevronDownIcon width={20} />}
+      {isOpen ? (
+        <ChevronUpIcon width={20} onClick={onCloseDropDown} />
+      ) : (
+        <ChevronDownIcon onClick={onOpenDropDown} width={20} />
+      )}
     </div>
   );
 }
