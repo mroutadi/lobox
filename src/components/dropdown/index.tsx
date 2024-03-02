@@ -65,6 +65,7 @@ function Dropdown() {
   return (
     <div className='relative'>
       <Input
+        placeholder='Science'
         onChange={handleInputChange}
         value={inputValue}
         isOpen={isOpen}
@@ -74,7 +75,7 @@ function Dropdown() {
       <div
         className={classnames(
           'absolute w-full left-0 top-full border-1 mt-4',
-          'p-4 rounded-gb flex flex-col gap-4 max-h-[200px] overflow-auto',
+          'p-4 rounded-gb flex flex-col gap-4 max-h-[250px] overflow-auto',
           {
             hidden: !isOpen,
             block: isOpen

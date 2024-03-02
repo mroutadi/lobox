@@ -1,1 +1,8 @@
-export const LIST = ['Education', 'Yeeeah, science!', 'Art', 'Sport', 'Games', 'Health'];
+export const LIST = [
+  'Education 🎓',
+  'Yeeeah, science! 🔮',
+  'Art 🎭',
+  'Sport ⚽',
+  'Games 🎮',
+  'Health 🏥'
+];

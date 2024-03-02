@@ -8,13 +8,15 @@ function Input({
   onOpen,
   onClose,
   onChange,
-  value
+  value,
+  placeholder
 }: {
   isOpen: boolean;
   onOpen: VoidFunction;
   onClose: VoidFunction;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   value: string;
+  placeholder?: string;
 }) {
   const inputRef = useRef();
   const onOpenDropDown = () => {
@@ -36,6 +38,7 @@ function Input({
       )}
     >
       <input
+        placeholder={placeholder}
         value={value}
         onChange={onInputChange}
         onClick={onOpenDropDown}
